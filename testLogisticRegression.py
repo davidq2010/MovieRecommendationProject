@@ -1,13 +1,19 @@
 #import sklearn.linear_model.LogisticRegression
+import numpy as np
+import pandas as pd
 
 def readDataFromFeatureFile(_file):
+  '''
+  Read data from feature file and store them into a list of list
+
+  '''
   f = open(_file, 'r')
 
   userList = list()
 
   lines = f.readlines()
   for line in lines:
-    featureList = lineNew.split(' ')
+    featureList = line.split(' ')
     featureList.pop(len(featureList)-1)
 
     try:
@@ -18,28 +24,28 @@ def readDataFromFeatureFile(_file):
       print("")
 
   f.close()
+  df = pd.DataFrame(data = userList)
 
   # Return our X feature list
-  return userList
+  return df
 
 
 def readDataFromTargetFile(_file):
-	f = open(_file, 'r')
+  f = open(_file, 'r')
 
-	targetList = list()
+  targetList = list()
+  lines = f.readlines()
 
-	lines = f.readlines()
+  for line in lines:
+    targetList.append(float(line[0:1]))
+  
+  f.close()
+  df = pd.DataFrame(data = targetList)
+	
+  return df
 
-	for line in lines:
-		targetList.append(float(line[0:1]))
-
-	f.close()
-
-	return targetList
-
-#X = readDataFromFeatureFile('x_train.txt')
-
+X = readDataFromFeatureFile('x_train.txt')
 Y = readDataFromTargetFile('y_train.txt')
 
-#print(X)
+print(X)
 print(Y)

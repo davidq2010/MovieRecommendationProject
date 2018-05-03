@@ -1,7 +1,5 @@
-#from sklearn.linear_model import LogisticRegression
 import pandas as pd
 import sys, getopt
-from sklearn.model_selection import train_test_split
 
 def __readDataFromFeatureFile(_file):
   """

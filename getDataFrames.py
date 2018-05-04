@@ -17,8 +17,19 @@ def __readDataFromFeatureFile(_file):
     featureList.pop(len(featureList)-1)
 
     try:
-    	featureList = [float(i) for i in featureList]
-    	userList.append(featureList)
+      features = []
+      # gender
+      features.append(featureList[0])
+      # age
+      features.append(featureList[1:8])
+      # occupation
+      features.append(featureList[8:28])
+      # zip code region
+      features.append(featureList[28])
+      # movie genres
+      features.append(featureList[29:])
+      userList.append(features)
+
     except ValueError:
       #print("error on line ", line)
       print("")

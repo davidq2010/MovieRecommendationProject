@@ -16,7 +16,7 @@ import sys, getopt
 
 def testModel(_model, X_train, X_test, y_train, y_test):
     """
-    X_train and X_test should be preprocessed. 
+    X_train and X_test should be preprocessed.
     """
     if _model == "LogisticRegression":
         model = LogisticRegression(multi_class='multinomial', solver='lbfgs',
@@ -75,7 +75,7 @@ def main(argv):
     X_train, X_test, y_train, y_test = getData(featureFile, targetFile)
     columns = ['Gender', 'Age', 'Occupation','Region']
     X_train, X_test = preprocessData(X_train, X_test, columns)
-    testModel("LogisticRegression", X, Y)
+    testModel("LogisticRegression", X_train, X_test, y_train, y_test)
     #testModel("RandomForestClassifier", X, Y)
     #testModel("MLPClassifier", X, Y)
     #testModel("GradientBoostingClassifier", X, Y)

@@ -19,7 +19,7 @@ def testModel(_model, X_train, X_test, y_train, y_test):
     X_train and X_test should be preprocessed.
     """
     if _model == "LogisticRegression":
-        model = LogisticRegression(multi_class='multinomial', solver='lbfgs')
+        model = LogisticRegression(solver='sag')
     elif _model == "MLPClassifier":
         model = MLPClassifier()
     elif _model == "RandomForestClassifier":

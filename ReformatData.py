@@ -90,5 +90,8 @@ with open('ratings.dat','r') as ratings, open('x_data.csv', 'w') as x, open('y_d
       i = i + 1
     x.write(movieFeatures[i] + '\n')
 
-    y.write(tokens[2] + '\n')
+    if(tokens[2] > 3):
+      y.write('1' + '\n')
+    else:
+      y.write('0' + '\n')
 

@@ -9,13 +9,15 @@ from sklearn.metrics import accuracy_score
 
 # Data manipulation
 from matplotlib import pyplot as plt
-from sklearn.model_selection import train_test_split
-from getDataFrames import getXYdataFrames
+from DataPreprocessing import getData, preprocessData
 
 # Command line
 import sys, getopt
 
-def testModel(_model, _X, _Y):
+def testModel(_model, X_train, X_test, y_train, y_test):
+    """
+    X_train and X_test should be preprocessed. 
+    """
     if _model == "LogisticRegression":
         model = LogisticRegression(multi_class='multinomial', solver='lbfgs',
                 verbose=3)
@@ -28,8 +30,6 @@ def testModel(_model, _X, _Y):
     elif _model == "XGBClassifier":
         model = XGBClassifier()
 
-    X_train, X_test, y_train, y_test = __splitData(_X, _Y)
-
     # Since XGBoost is not part of sklearn
     if _model == "XGBClassifier":
         model.fit(X_train, y_train.values.ravel())
@@ -41,8 +41,8 @@ def testModel(_model, _X, _Y):
 
     # For the sklearn stuff
     else:
-        selector = RFE(model, 5)
-        #selector = RFECV(model)    # Use the RFE wrapper
+        #selector = RFE(model, 5)
+        selector = RFECV(model)    # Use the RFE wrapper
         selector.fit(X_train, y_train.values.ravel())
         y_pred = selector.predict(X_test)
         print("Accuracy of ", _model, " classifier on test set: {:.2f}".format(
@@ -72,7 +72,9 @@ def main(argv):
     targetFile = argv[1]
     print("Feature file: ", featureFile)
     print("Target file: " , targetFile)
-    X,Y = getXYdataFrames(featureFile, targetFile)
+    X_train, X_test, y_train, y_test = getData(featureFile, targetFile)
+    columns = ['Gender', 'Age', 'Occupation','Region']
+    X_train, X_test = preprocessData(X_train, X_test, columns)
     testModel("LogisticRegression", X, Y)
     #testModel("RandomForestClassifier", X, Y)
     #testModel("MLPClassifier", X, Y)

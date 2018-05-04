@@ -36,6 +36,9 @@ def main(argv):
     print(X_test)
 
 def preprocessData(X_train, X_test, columns):
+  """
+  Returns encoded and scaled X data
+  """
   X_train, X_test = encodeCategoricalFeatures(X_train, X_test, columns)
   X_train, X_test = scaleData(X_train, X_test)
   return X_train, X_test

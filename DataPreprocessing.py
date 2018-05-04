@@ -2,69 +2,6 @@ from sklearn.preprocessing import OneHotEncoder
 import pandas as pd
 import sys, getopt
 
-def __readDataFromFeatureFile(_file):
-  """
-  Private function to read data from feature file and store them into a list
-  of lists.
-  """
-  print("Reading Feature file...")
-  f = open(_file, 'r')
-
-  userList = list()
-
-  lines = f.readlines()
-  for line in lines:
-    featureList = line.split(' ')
-    featureList.pop(len(featureList)-1)
-
-    try:
-      features = []
-      # gender
-      features.append(featureList[0])
-      # age
-      features.append(featureList[1:8])
-      # occupation
-      features.append(featureList[8:28])
-      # zip code region
-      features.append(featureList[28])
-      # movie genres
-      features.append(featureList[29:])
-      userList.append(features)
-
-    except ValueError:
-      #print("error on line ", line)
-      print("")
-
-  f.close()
-  df = pd.DataFrame(data = userList)
-
-  # Return our X feature list
-  return df
-
-
-def __readDataFromTargetFile(_file):
-  """
-  Private function to read data from target file and store it into a list.
-  """
-  print("Reading Target file...")
-  f = open(_file, 'r')
-
-  targetList = list()
-  lines = f.readlines()
-
-  for line in lines:
-    targetList.append(float(line[0:1]))
-
-  f.close()
-  df = pd.DataFrame(data = targetList)
-
-  return df
-
-def getXYdataFrames(_featureFile, _targetFile):
-    X = __readDataFromFeatureFile(_featureFile)
-    Y = __readDataFromTargetFile(_targetFile)
-    return X, Y
-
 def main(argv):
     """
     Takes the command line arguments (after the name of the file) and uses them
@@ -89,10 +26,9 @@ def main(argv):
     targetFile = argv[1]
     print("Feature file: ", featureFile)
     print("Target file: " , targetFile)
-    X,Y = getXYdataFrames(featureFile, targetFile)
-    print(X)
-    print(Y)
-
+    X = pd.read_csv(featureFile)
+    Y = pd.read_csv(targetFile)
+    
 
 if __name__ == "__main__":
     main(sys.argv[1:])

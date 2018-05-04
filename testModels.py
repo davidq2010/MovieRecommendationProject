@@ -3,6 +3,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.feature_selection import RFECV
+from sklearn.feature_selection import RFE
 from xgboost import XGBClassifier
 from sklearn.metrics import accuracy_score
 
@@ -26,7 +27,8 @@ def __splitData(_X, _Y):
 
 def testModel(_model, _X, _Y):
     if _model == "LogisticRegression":
-        model = LogisticRegression(multi_class='multinomial', solver='lbfgs')
+        model = LogisticRegression(multi_class='multinomial', solver='lbfgs',
+                verbose=3)
     elif _model == "MLPClassifier":
         model = MLPClassifier()
     elif _model == "RandomForestClassifier":
@@ -41,7 +43,7 @@ def testModel(_model, _X, _Y):
     # Since XGBoost is not part of sklearn
     if _model == "XGBClassifier":
         model.fit(X_train, y_train.values.ravel())
-        #y_pred = model.predict(X_test)
+        y_pred = model.predict(X_test)
         predictions = [round(value) for value in y_pred]
         accuracy = accuracy_score(y_test, predictions)
         print("Accuracy of ", _model, " classifier on test set: {:.2f}".format(
@@ -49,9 +51,10 @@ def testModel(_model, _X, _Y):
 
     # For the sklearn stuff
     else:
-        selector = RFECV(model)    # Use the RFE wrapper
+        selector = RFE(model, 5)
+        #selector = RFECV(model)    # Use the RFE wrapper
         selector.fit(X_train, y_train.values.ravel())
-        #y_pred = selector.predict(X_test)
+        y_pred = selector.predict(X_test)
         print("Accuracy of ", _model, " classifier on test set: {:.2f}".format(
             selector.score(X_test, y_test)))
 
@@ -81,7 +84,7 @@ def main(argv):
     print("Target file: " , targetFile)
     X,Y = getXYdataFrames(featureFile, targetFile)
     testModel("LogisticRegression", X, Y)
-    testModel("RandomForestClassifier", X, Y)
+    #testModel("RandomForestClassifier", X, Y)
     #testModel("MLPClassifier", X, Y)
     #testModel("GradientBoostingClassifier", X, Y)
     #testModel("XGBClassifier", X, Y)

@@ -1,4 +1,3 @@
-
 def parseUserDataFile(_userFile):
   """
   Read through _userFile and map the userID to a list containing Gender, Age,
@@ -109,6 +108,6 @@ with open('ratings.dat','r') as ratings, open('xData.txt', 'w') as x, open('yDat
       x.write(movieFeatures[i] + ' ')
       i = i + 1
     x.write(movieFeatures[i] + '\n')
-      
+
     y.write(tokens[2] + '\n')
 

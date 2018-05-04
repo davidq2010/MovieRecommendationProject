@@ -101,8 +101,11 @@ print "Finished training after %d epochs. Misclassifications in last epoch: " \
 
 
 #clf = MLPClassifier(solver='sgd', activation='logistic',alpha=1e-5, learning_rate_init = 0.1,hidden_layer_sizes=(2,))
+
+#hidden_layer_sizes=(7,) if you want only 1 hidden layer with 7 hidden units
+#length = n_layers - 2 is because you have 1 input layer and 1 output layer.
 clf = MLPClassifier(solver='lbfgs',alpha=1e-5,hidden_layer_sizes=(2,))
-clf.fit(inputs, targets)        
+clf.fit(inputs, targets)
 yhats = clf.predict(inputs)
 print(clf.score(inputs,targets))
 

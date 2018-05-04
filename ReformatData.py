@@ -15,38 +15,16 @@ def parseUserDataFile(_userFile):
 
     # Encode gender variable, 1 is female, 0 is male
     if(tokens[1] == 'F'):
-      features.append('1')
+      features.append('Female')
     else:
-      features.append('0')
+      features.append('Male')
 
-    # Encode age in binary
-    ages = ['1', '18', '25', '35', '45', '50', '56']
-
-    i = 0
-    while i < len(ages):
-      if tokens[2] == ages[i]:
-        features.append('1')
-      else:
-        features.append('0')
-      i = i + 1
-
-    # occupations is from 0 to 20
-    i = 0
-    while i <= 20:
-      if tokens[3] == str(i):
-        features.append('1')
-      else:
-        features.append('0')
-      i = i + 1
-
-    # zip code encoded as the first (regional) digit
-    i = 0
-    while i <= 9:
-      if tokens[4][0] == str(i):
-        features.append('1')
-      else:
-        features.append('0')
-      i = i + 1
+    # Age
+    features.append(tokens[2])
+    # Occupation
+    features.append(tokens[3])
+    # Zip code region
+    features.append(tokens[4][0])
 
     users[tokens[0]] = features
 
@@ -94,18 +72,21 @@ users = parseUserDataFile('users.dat')
 movies = parseMovieDataFile('movies.dat')
 ratingFile = 'ratings.dat'
 
-with open('ratings.dat','r') as ratings, open('xData.txt', 'w') as x, open('yData.txt', 'w') as y:
+with open('ratings.dat','r') as ratings, open('x_data.csv', 'w') as x, open('y_data.csv', 'w') as y:
+  x.write('Gender,Age,Occupation,Region,Action,Adventure,Animation,Children\'s,Comedy,Crime,Documentary,' +
+  'Drama,Fantasy,Film-Noir,Horror,Musical,Mystery,Romance,Sci-Fi,Thriller,War,Western' + '\n')
+  y.write('Rating' + '\n')
   lines = ratings.readlines()
   for line in lines:
     tokens = line.split("::")
     userFeatures = users[tokens[0]]
     movieFeatures = movies[tokens[1]]
     for feature in userFeatures:
-      x.write(feature + ' ')
+      x.write(feature + ',')
 
     i = 0
     while i < len(movieFeatures) - 1:
-      x.write(movieFeatures[i] + ' ')
+      x.write(movieFeatures[i] + ',')
       i = i + 1
     x.write(movieFeatures[i] + '\n')
 

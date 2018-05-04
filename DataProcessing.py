@@ -66,7 +66,7 @@ def parseMovieDataFile(_movieFile):
   'Thriller','War','Western']
   movies = {}
 
-  f = open(_movieFile, 'r')
+  f = open(_movieFile, 'r', encoding = "ISO-8859-1")
   lines = f.readlines()
 
   for line in lines:
@@ -75,10 +75,10 @@ def parseMovieDataFile(_movieFile):
 
     thisGenres = tokens[2].split("|")
     i = 0
-    while i <= len(genres):
-      bool flag = False
+    while i < len(genres):
+      flag = False
       for genre in thisGenres:
-        if genre == genres[i]
+        if genre == genres[i]:
           features.append('1')
           flag = True
       if not flag:
@@ -90,39 +90,25 @@ def parseMovieDataFile(_movieFile):
   f.close()
   return (movies)
 
-
-def parseRatingFile(_ratingFile):
-  """
-  Read through _ratingFile and map _userID and _movieID to a rating
-
-  Return this map of tuple(userID, movieID) : rating
-  """
-
 # Retriever user and movie data
 users = parseUserDataFile('users.dat')
 movies = parseMovieDataFile('movies.dat')
 ratingFile = 'ratings.dat'
 
-with open('ratings.dat','r') as ratings, open('xData', 'w') as x, open('yData', 'w') as y:
+with open('ratings.dat','r') as ratings, open('xData.txt', 'w') as x, open('yData.txt', 'w') as y:
   lines = ratings.readlines()
-    for line in lines:
-      tokens = line.split("::")
-      userFeatures = users[tokens[0]]
-      movieFeatures = movies[tokens[2]]
-      for feature in userFeatures:
-        x.write(feature + ' ')
-      for feature in movieFeatures:
-        x.write(feature + ' ')
+  for line in lines:
+    tokens = line.split("::")
+    userFeatures = users[tokens[0]]
+    movieFeatures = movies[tokens[1]]
+    for feature in userFeatures:
+      x.write(feature + ' ')
 
+    i = 0
+    while i < len(movieFeatures) - 1:
+      x.write(movieFeatures[i] + ' ')
+      i = i + 1
+    x.write(movieFeatures[i] + '\n')
       
-    
-
-
-def populateTrainingAndTestingMatrices(_userData, _movieData, _ratingData):
-  """
-  Randomly pick 80% of data for training matrices and remainder for testing
-  matrices.
-
-  Returns X_train, Y_train, X_test, Y_test matrices
-  """
+    y.write(tokens[2] + '\n')
 

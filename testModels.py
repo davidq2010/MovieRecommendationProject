@@ -15,16 +15,6 @@ from getDataFrames import getXYdataFrames
 # Command line
 import sys, getopt
 
-def __splitData(_X, _Y):
-    """
-    Splits the X and Y datasets into training and testing datasets. The X
-    datasets are represented as np arrays of lists, while Y datasets are lists.
-    """
-    X_train, X_test, y_train, y_test = train_test_split(_X, _Y, test_size = 0.2)
-    print("Training Dimensions: ", X_train.shape, y_train.shape)
-    print("Testing Dimensions: ", X_test.shape, y_test.shape)
-    return X_train, X_test, y_train, y_test
-
 def testModel(_model, _X, _Y):
     if _model == "LogisticRegression":
         model = LogisticRegression(multi_class='multinomial', solver='lbfgs',

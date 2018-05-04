@@ -19,7 +19,7 @@ def testModel(_model, X_train, X_test, y_train, y_test):
     X_train and X_test should be preprocessed.
     """
     if _model == "LogisticRegression":
-        model = LogisticRegression(multi_class='multinomial', solver='lbfgs')
+        model = LogisticRegression(solver='sag', max_iter=1000)
     elif _model == "MLPClassifier":
         model = MLPClassifier()
     elif _model == "RandomForestClassifier":
@@ -74,11 +74,11 @@ def main(argv):
     X_train, X_test, y_train, y_test = getData(featureFile, targetFile)
     columns = ['Gender', 'Age', 'Occupation','Region']
     X_train, X_test = preprocessData(X_train, X_test, columns)
-    #testModel("LogisticRegression", X_train, X_test, y_train, y_test)
-    testModel("RandomForestClassifier", X_train, X_test, y_train, y_test)
-    #testModel("MLPClassifier", X_train, X_test, y_train, y_test)
+    #testModel("LogisticRegression", X_train, X_test, y_train, y_test)          #0.58
+    #testModel("RandomForestClassifier", X_train, X_test, y_train, y_test)      #0.61
+    # testModel("MLPClassifier", X_train, X_test, y_train, y_test)
     #testModel("GradientBoostingClassifier", X_train, X_test, y_train, y_test)
-    #testModel("XGBClassifier",X_train, X_test, y_train, y_test)
+    testModel("XGBClassifier",X_train, X_test, y_train, y_test)
 
 
 if __name__ == "__main__":
